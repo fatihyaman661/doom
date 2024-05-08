@@ -74,7 +74,7 @@
 ;;Latex related
 (setq +latex-viewers '(pdf-tools))
 (setq lsp-tex-server 'texlab)
-(add-hook LaTeX-mode-hook #'xenops-mode)
+(add-hook 'LaTeX-mode-hook #'xenops-mode)
 (map! :map cdlatex-mode-map
       :i "TAB" #'cdlatex-tab)
 
