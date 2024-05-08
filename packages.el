@@ -148,5 +148,7 @@
 (use-package gdscript-mode
   :hook (gdscript-mode . eglot-ensure)
   :hook (gdscript-mode . company-mode))
-
-
+(package! pdf-tools)
+(use-package pdf-tools)
+(package! xenops)
+(use-package xenops)

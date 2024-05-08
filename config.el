@@ -71,6 +71,17 @@
 (setq lsp-dart-flutter-sdk "/media/gamedisk/linux_programs/flutter")
 (setq flutter-sdk-path "/media/gamedisk/linux_programs/flutter")
 
+;;Latex related
+(setq +latex-viewers '(pdf-tools))
+(setq lsp-tex-server 'texlab)
+(add-hook LaTeX-mode-hook #'xenops-mode)
+(map! :map cdlatex-mode-map
+      :i "TAB" #'cdlatex-tab)
+
+
+
+(add-hook 'prog-mode-hook #'company-mode)
+
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
 ;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
 ;;
