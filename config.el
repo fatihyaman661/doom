@@ -46,9 +46,101 @@
 (when (fboundp 'windmove-default-keybindings)
   (windmove-default-keybindings))
 
+
+;;Maximise window upon startup
+(setq initial-frame-alist '((top . 1) (left . 1) (width . 114) (height . 32)))
+(add-to-list 'initial-frame-alist '(maximized))
+
+
+
+;;;;;;;Package activation;;;;;;;
+
+
+
+(use-package ivy
+  :config
+  (ivy-mode 1)
+  (setq ivy-use-virtual-buffers t)
+  (setq ivy-count-format "(%d/%d) "))
+(use-package ivy-rich
+  :config
+  (ivy-rich-mode 1))
+(use-package all-the-icons
+  :if (display-graphic-p))
+(use-package all-the-icons-ivy-rich
+  :config
+  (all-the-icons-ivy-rich-mode 1))
+(use-package anzu
+  :config
+  (global-anzu-mode +1)
+  (global-set-key [remap query-replace] 'anzu-query-replace)
+  (global-set-key [remap query-replace-regexp] 'anzu-query-replace-regexp))
+(use-package company)
+(use-package company-statistics
+  :config
+  (company-statistics-mode 1))
+(use-package counsel)
+(use-package crux)
+(use-package drag-stuff
+  :config
+  (drag-stuff-global-mode t)
+  (drag-stuff-define-keys))
+(use-package eglot)
+(use-package emojify)
+(use-package emojify-logos)
+(use-package flycheck)
+(use-package flycheck-eglot
+  :config
+  (global-flycheck-eglot-mode 1))
+(use-package goto-line-preview
+  :init
+  (global-set-key [remap goto-line] 'goto-line-preview))
+(use-package helm)
+(use-package highlight-indentation
+  :config
+  (highlight-indentation-mode +1))
+(use-package hydra)
+(use-package magit-delta)
+(use-package magit-section)
+(use-package major-mode-hydra)
+(use-package mode-icons
+  :config
+  (mode-icons-mode 1))
+(use-package popup)
+(use-package pretty-hydra)
+(use-package rainbow-mode
+  :config
+  (rainbow-mode +1))
+(use-package swiper)
+(use-package transient)
+(use-package undo-fu
+  :config
+  (undo-fu-session-global-mode t))
+(use-package smartparens
+  :config
+  (smartparens-mode +1))
+(use-package undo-fu-session)
+(use-package vundo)
+(use-package gdscript-mode
+  :hook (gdscript-mode . eglot-ensure)
+  :hook (gdscript-mode . company-mode))
+(use-package pdf-tools)
+(use-package xenops)
+(use-package! iedit
+  :defer
+  :config
+  (set-face-background 'iedit-occurrence "Magenta")
+  :bind
+  ("C-;" . iedit-mode))
+(use-package annotate)
+
+
+
+
+
 ;;;;;Key Bindings;;;;
 
-;ivy
+
 (global-set-key (kbd "C-s") 'swiper-isearch)
 (global-set-key (kbd "M-x") 'counsel-M-x)
 (global-set-key (kbd "C-x C-f") 'counsel-find-file)
@@ -62,10 +154,9 @@
 (global-set-key (kbd "C-x b") 'ivy-switch-buffer)
 (global-set-key (kbd "C-c v") 'ivy-push-view)
 (global-set-key (kbd "C-c V") 'ivy-pop-view)
-
-
-;undo-fu
 (global-set-key (kbd "M-_") 'undo-fu-only-redo)
+(map! "M-g g" #'avy-goto-line)
+(map! "M-g M-g" #'avy-goto-line)
 
 (setq lsp-dart-sdk-dir "/media/gamedisk/linux_programs/flutter/bin/cache/dart-sdk")
 (setq lsp-dart-flutter-sdk "/media/gamedisk/linux_programs/flutter")
@@ -79,8 +170,11 @@
       :i "TAB" #'cdlatex-tab)
 
 
-
 (add-hook 'prog-mode-hook #'company-mode)
+
+(setq auto-save-default t
+      make-backup-files t)
+
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
 ;; `after!' block, otherwise Doom's defaults may override your settings. E.g.

@@ -49,106 +49,39 @@
 ;; (unpin! t)
 
 (package! ivy)
-(use-package ivy
-  :config
-  (ivy-mode 1)
-  (setq ivy-use-virtual-buffers t)
-  (setq ivy-count-format "(%d/%d) "))
 (package! ivy-rich)
-(use-package ivy-rich
-  :config
-  (ivy-rich-mode 1))
 (package! all-the-icons)
-(use-package all-the-icons
-  :if (display-graphic-p))
 (package! all-the-icons-ivy-rich)
-(use-package all-the-icons-ivy-rich
-  :config
-  (all-the-icons-ivy-rich-mode 1))
 (package! anzu)
-(use-package anzu
-  :config
-  (global-anzu-mode +1)
-  (global-set-key [remap query-replace] 'anzu-query-replace)
-  (global-set-key [remap query-replace-regexp] 'anzu-query-replace-regexp))
 (package! company)
-(use-package company)
 (package! company-statistics)
-(use-package company-statistics
-  :config
-  (company-statistics-mode 1))
 (package! counsel)
-(use-package counsel)
 (package! crux)
-(use-package crux)
 (package! drag-stuff)
-(use-package drag-stuff
-  :config
-  (drag-stuff-global-mode t)
-  (drag-stuff-define-keys))
 (package! eglot)
-(use-package eglot)
 (package! emojify)
-(use-package emojify)
 (package! emojify-logos)
-(use-package emojify-logos)
 (package! flycheck)
-(use-package flycheck)
 (package! flycheck-eglot)
-(use-package flycheck-eglot
-  :config
-  (global-flycheck-eglot-mode 1))
 (package! goto-line-preview)
-(use-package goto-line-preview
-  :init
-  (global-set-key [remap goto-line] 'goto-line-preview))
 (package! helm)
-(use-package helm)
 (package! highlight-indentation)
-(use-package highlight-indentation
-  :config
-  (highlight-indentation-mode +1))
 (package! hydra)
-(use-package hydra)
 (package! magit-delta)
-(use-package magit-delta)
 (package! magit-section)
-(use-package magit-section)
 (package! major-mode-hydra)
-(use-package major-mode-hydra)
 (package! mode-icons)
-(use-package mode-icons
-  :config
-  (mode-icons-mode 1))
 (package! popup)
-(use-package popup)
 (package! pretty-hydra)
-(use-package pretty-hydra)
 (package! rainbow-mode)
-(use-package rainbow-mode
-  :config
-  (rainbow-mode +1))
 (package! swiper)
-(use-package swiper)
 (package! transient)
-(use-package transient)
 (package! undo-fu)
-(use-package undo-fu
-  :config
-  (undo-fu-session-global-mode t))
 (package! smartparens)
-(use-package smartparens
-  :config
-  (smartparens-mode +1))
 (package! undo-fu-session)
-(use-package undo-fu-session)
 (package! vundo)
-(use-package vundo)
 (package! gdscript-mode)
-(use-package gdscript-mode
-  :hook (gdscript-mode . eglot-ensure)
-  :hook (gdscript-mode . company-mode))
 (package! pdf-tools)
-(use-package pdf-tools)
 (package! xenops)
-(use-package xenops)
+(package! iedit)
+(package! annotate)
