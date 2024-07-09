@@ -39,18 +39,26 @@
 (setq display-line-numbers-type t)
 
 ;; If you use `org' and don't want your org files in the default location below,
-;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/org/")
+;; change `or g-directory'. It must be set before org loads!
+(setq org-directory "/media/gamedisk/documents/org-directory")
+(setq org-noter-notes-search-path '("/media/gamedisk/documents/noterNotesSearchPath"))
+
 
 ;;windmove moves
 (when (fboundp 'windmove-default-keybindings)
   (windmove-default-keybindings))
 
+;; enable word-wrap (almost) everywhere
+(setq global-visual-line-mode t)
+
 
 ;;Maximise window upon startup
-(setq initial-frame-alist '((top . 1) (left . 1) (width . 114) (height . 32)))
-(add-to-list 'initial-frame-alist '(maximized))
+;;(setq initial-frame-alist '((top . 1) (left . 1) (width . 114) (height . 32)))
+;;(add-to-list 'initial-frame-alist '(maximized))
 
+
+(when (memq window-system '(mac ns x))
+  (exec-path-from-shell-initialize))
 
 
 ;;;;;;;Package activation;;;;;;;
@@ -125,7 +133,9 @@
   :hook (gdscript-mode . eglot-ensure)
   :hook (gdscript-mode . company-mode))
 (use-package pdf-tools)
-(use-package xenops)
+(use-package xenops
+  :config
+  (setq xenops-reveal-on-entry t))
 (use-package! iedit
   :defer
   :config
@@ -133,7 +143,23 @@
   :bind
   ("C-;" . iedit-mode))
 (use-package annotate)
-
+(use-package! org-roam-bibtex
+  :after org-roam
+  :config
+  (require 'org-ref)) ; optional: if using Org-ref v2 or v3 citation links
+(use-package! websocket
+    :after org-roam)
+(use-package! org-roam-ui
+    :after org-roam ;; or :after org
+;;         normally we'd recommend hooking orui after org-roam, but since org-roam does not have
+;;         a hookable mode anymore, you're advised to pick something yourself
+;;         if you don't care about startup time, use
+;;    :hook (after-init . org-roam-ui-mode)
+    :config
+    (setq org-roam-ui-sync-theme t
+          org-roam-ui-follow t
+          org-roam-ui-update-on-save t
+          org-roam-ui-open-on-start t))
 
 
 
@@ -166,9 +192,30 @@
 (setq +latex-viewers '(pdf-tools))
 (setq lsp-tex-server 'texlab)
 (add-hook 'LaTeX-mode-hook #'xenops-mode)
-(map! :map cdlatex-mode-map
-      :i "TAB" #'cdlatex-tab)
+(map! :map LaTeX-mode-map "TAB" #'cdlatex-tab)
 
+;;Disable drag-stuff in org-mode
+(add-hook 'org-mode-hook (lambda () (drag-stuff-mode -1)))
+
+
+
+;:godot related
+(setq gdscript-godot-executable "/media/gamedisk/Program Files/flatpak/app/org.godotengine.Godot/current/active/export/bin/org.godotengine.Godot")
+(defun lsp--gdscript-ignore-errors (original-function &rest args)
+  "Ignore the error message resulting from Godot not replying to the `JSONRPC' request."
+  (if (string-equal major-mode "gdscript-mode")
+      (let ((json-data (nth 0 args)))
+        (if (and (string= (gethash "jsonrpc" json-data "") "2.0")
+                 (not (gethash "id" json-data nil))
+                 (not (gethash "method" json-data nil)))
+            nil ; (message "Method not found")
+          (apply original-function args)))
+    (apply original-function args)))
+;; Runs the function `lsp--gdscript-ignore-errors` around `lsp--get-message-type` to suppress unknown notification errors.
+(advice-add #'lsp--get-message-type :around #'lsp--gdscript-ignore-errors)
+
+;;Add the lisp server directory
+(add-to-list 'load-path (expand-file-name "~/.cargo/bin" user-emacs-directory))
 
 (add-hook 'prog-mode-hook #'company-mode)
 

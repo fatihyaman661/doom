@@ -85,3 +85,11 @@
 (package! xenops)
 (package! iedit)
 (package! annotate)
+(package! exec-path-from-shell)
+(unpin! org-roam)
+(package! org-roam-ui)
+(package! org-roam-bibtex
+  :recipe (:host github :repo "org-roam/org-roam-bibtex"))
+;; When using bibtex-completion via the `biblio` module
+(unpin! bibtex-completion helm-bibtex ivy-bibtex)
+(package! org-ref)
